@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "311371007032",
+    "project_id": "midtermflutter-4e159",
+    "storage_bucket": "midtermflutter-4e159.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311371007032:android:f33fd3dbac3c10a849d2cd",
+        "android_client_info": {
+          "package_name": "com.alexjoneso.midterm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh4STLQxpxncZSEvE18AECG3_0KG6ekZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311371007032:android:11a589c01f3fb9cc49d2cd",
+        "android_client_info": {
+          "package_name": "com.alexjoneso.midterm2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh4STLQxpxncZSEvE18AECG3_0KG6ekZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
