@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mid_term/screens/splash_screen.dart';
+// import 'package:mid_term/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mid_term/firebase_options.dart';
+import 'package:mid_term/screens/home.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }
@@ -24,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: const Home(),
     );
   }
 }
