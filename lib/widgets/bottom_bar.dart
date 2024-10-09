@@ -37,7 +37,12 @@ class BottomUpSheet {
   });
 
   void productDetailsForm() async {
-    // Initialize the image controller if we're editing an existing product
+    _nameController.clear();
+    _descriptionController.clear();
+    _imageController.clear();
+    _categoryController.clear();
+    _priceController.clear();
+
     if (dataIsAvailable != true) {
       _nameController.text = name!;
       _descriptionController.text = description!;

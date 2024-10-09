@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mid_term/database/product.dart';
 import 'package:mid_term/database/services.dart';
 import 'package:mid_term/widgets/bottom_bar.dart';
+import 'package:mid_term/database/authentication.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,7 +21,7 @@ class _HomeState extends State<Home> {
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: const Color.fromARGB(255, 233, 250, 156).withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
           ),
@@ -29,7 +30,6 @@ class _HomeState extends State<Home> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Hình ảnh sản phẩm
           Container(
             width: 100,
             height: 100,
@@ -80,7 +80,6 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -123,14 +122,22 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Các mặc hàng của J97'),
+        title: const Text(
+          'Các mặc hàng của J97',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 233, 250, 156),
         automaticallyImplyLeading: false,
         elevation: 5,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              // signOutUser(context);
+              signOutUser(context);
             },
           ),
         ],

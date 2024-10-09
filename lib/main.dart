@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:mid_term/screens/splash_screen.dart';
+import 'package:mid_term/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mid_term/firebase_options.dart';
-import 'package:mid_term/screens/home.dart';
 import 'package:mid_term/database/services.dart';
 
 Future<void> main() async {
@@ -28,12 +27,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     getAllProducts();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter CRUD',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Home(),
+      home: const SplashScreen(),
     );
   }
 }
