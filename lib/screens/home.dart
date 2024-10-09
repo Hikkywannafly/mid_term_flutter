@@ -165,6 +165,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           final detailsForm =
               BottomUpSheet(context: context, dataIsAvailable: true);
+              
           detailsForm.productDetailsForm();
         },
       ),
