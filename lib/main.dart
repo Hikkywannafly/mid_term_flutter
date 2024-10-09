@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mid_term/firebase_options.dart';
 import 'package:mid_term/screens/home.dart';
+import 'package:mid_term/database/services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +11,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  getAllProducts();
 
   runApp(const MyApp());
 }
@@ -24,6 +26,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    getAllProducts();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

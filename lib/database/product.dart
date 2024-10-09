@@ -2,7 +2,7 @@ class Product {
   String id;
   String name;
   String description;
-  double price;
+  int price;
   String image;
   String category;
   Product({
@@ -25,15 +25,14 @@ class Product {
     };
   }
 
-
   factory Product.fromMap(String id, Map<String, dynamic> data) {
     return Product(
       id: id,
-      name: data['name'],
-      description: data['description'],
-      price: data['price'],
-      image: data['image'],
-      category: data['category'],
+      name: data['name'] ?? 'No Name',
+      description: data['description'] ?? 'No Description',
+      price: data['price'] ?? 0,
+      image: data['image'] ?? 'No Image',
+      category: data['category'] ?? 'No Category',
     );
   }
 }

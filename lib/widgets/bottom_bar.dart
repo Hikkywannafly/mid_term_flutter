@@ -1,9 +1,10 @@
-import 'dart:collection';
-
 import 'package:mid_term/database/services.dart';
 import 'package:mid_term/database/product.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart'; //
+import 'dart:math';
+import 'dart:io';
 
 int k = 0;
 bool dataIsAvailable = false;
@@ -35,14 +36,14 @@ class BottomUpSheet {
     required this.context,
   });
 
-  void studentsDetailsForm() async {
+  void productDetailsForm() async {
     // Initialize the image controller if we're editing an existing product
     if (dataIsAvailable != true) {
-      _nameController.text = name ?? '';
-      _descriptionController.text = description ?? '';
-      _imageController.text = image ?? '';
-      _categoryController.text = category ?? '';
-      _priceController.text = price ?? '';
+      _nameController.text = name!;
+      _descriptionController.text = description!;
+      _imageController.text = image!;
+      _categoryController.text = category!;
+      _priceController.text = price!;
     }
 
     showModalBottomSheet(
@@ -77,15 +78,14 @@ class BottomUpSheet {
               controller: _imageController,
               decoration:
                   const InputDecoration(hintText: 'Nhập link ảnh sản phẩm'),
-              readOnly: true, // Để ngăn người dùng chỉnh sửa thủ công
+              readOnly: true,
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
                 String? imagePath = await _uploadImage();
                 if (imagePath != null && context.mounted) {
-                  _imageController.text =
-                      imagePath; // Cập nhật trường với đường dẫn hình ảnh
+                  _imageController.text = imagePath;
                 }
               },
               child: const Text('Tải ảnh lên'),
@@ -105,9 +105,7 @@ class BottomUpSheet {
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  // Logic để thêm hoặc cập nhật sản phẩm
                   if (id == null) {
-                    // Thêm sản phẩm mới
                     await addProductButton();
                     if (k == 0 && context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -118,11 +116,16 @@ class BottomUpSheet {
                       );
                     }
                   } else {
-                    // Cập nhật sản phẩm
-                    // await updateProduct(id!);
+                    await updateProduct(Product(
+                      id: id!,
+                      name: _nameController.text,
+                      description: _descriptionController.text,
+                      image: _imageController.text,
+                      category: _categoryController.text,
+                      price: int.parse(_priceController.text),
+                    ));
                   }
 
-                  // Reset các trường
                   _nameController.clear();
                   _descriptionController.clear();
                   _imageController.clear();
@@ -150,8 +153,6 @@ class BottomUpSheet {
     final category = _categoryController.text.trim();
     final price = _priceController.text.trim();
 
-    int? id;
-
     if (name.isEmpty ||
         description.isEmpty ||
         image.isEmpty ||
@@ -161,26 +162,36 @@ class BottomUpSheet {
       return;
     }
     final product = Product(
-      id: id.toString(),
+      id: Random().nextInt(1000000).toString(),
       name: name,
       description: description,
       image: image,
       category: category,
-      price: double.parse(price),
+      price: int.parse(price),
     );
-    ProductService productService = ProductService();
-    print(product);
-    await productService.addProduct(product);
+    addProduct(product);
   }
 
-  // Hàm tải ảnh lên từ thiết bị
   Future<String?> _uploadImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      return image.path; // Trả về đường dẫn của ảnh
+      String fileName = 'images/${DateTime.now().millisecondsSinceEpoch}.png';
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child(fileName);
+
+      try {
+        UploadTask uploadTask = storageReference.putFile(File(image.path));
+        TaskSnapshot taskSnapshot = await uploadTask;
+
+        String imageUrl = await taskSnapshot.ref.getDownloadURL();
+        return imageUrl;
+      } catch (e) {
+        print("Lỗi khi tải ảnh lên: $e");
+        return null;
+      }
     }
-    return null; // Nếu không chọn ảnh
+    return null;
   }
 }

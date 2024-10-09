@@ -11,6 +11,114 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Container buildProductItem(Product product) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Hình ảnh sản phẩm
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              image: DecorationImage(
+                image: NetworkImage(product.image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  'Mô tả: ${product.description}',
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  'Giá: ${product.price} VNĐ',
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  'Loại: ${product.category}',
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit, color: Colors.blue),
+                onPressed: () {
+                  final details = BottomUpSheet(
+                      id: product.id,
+                      category: product.category,
+                      name: product.name,
+                      price: product.price.toString(),
+                      image: product.image,
+                      description: product.description,
+                      context: context);
+
+                  details.productDetailsForm();
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {
+                  String id = product.id;
+                  deleteProduct(id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Đã xóa sản phẩm'),
+                      backgroundColor: Color.fromARGB(255, 221, 31, 17),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,40 +135,19 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: ValueListenableBuilder<List<Product>>(
+      body: ValueListenableBuilder(
         valueListenable: productListNotifier,
-        builder: (context, products, child) {
-          if (products.isEmpty) {
+        builder: (BuildContext context, List<Product> data, Widget? child) {
+          if (data.isEmpty) {
             return const Center(
                 child: Text('Rất Tiếc bạn không phải là fan của J97'));
           }
           return ListView.builder(
-            itemCount: products.length,
+            itemCount: data.length,
             itemBuilder: (context, index) {
-              final product = products[index];
-              return ListTile(
-                title: Text(product.name),
-                subtitle: Text('Price: ${product.price.toString()}'),
-                leading: Image.network(product.image),
-                trailing: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  // children: [
-                  //   IconButton(
-                  //     icon: Icon(Icons.edit),
-                  //     onPressed: () {
-                  //       // Hàm chỉnh sửa sản phẩm
-                  //       _editProduct(product);
-                  //     },
-                  //   ),
-                  //   IconButton(
-                  //     icon: Icon(Icons.delete),
-                  //     onPressed: () {
-                  //       // Hàm xóa sản phẩm
-                  //       _productService.deleteProduct(product.id);
-                  //     },
-                  //   ),
-                  // ],
-                ),
+              final product = data[index];
+              return buildProductItem(
+                product,
               );
             },
           );
@@ -71,7 +158,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           final detailsForm =
               BottomUpSheet(context: context, dataIsAvailable: true);
-          detailsForm.studentsDetailsForm();
+          detailsForm.productDetailsForm();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
