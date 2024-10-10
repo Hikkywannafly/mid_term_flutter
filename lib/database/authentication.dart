@@ -26,6 +26,12 @@ class ValidateEmailAndPassword {
                   email: emailController, password: passwordController)
               .then(
             (value) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Đăng nhập thành công'),
+                  backgroundColor: Color.fromARGB(255, 0, 255, 85),
+                ),
+              );
               Navigator.pushReplacement(
                 // ignore: use_build_context_synchronously
                 context,
@@ -42,6 +48,12 @@ class ValidateEmailAndPassword {
                   email: emailController, password: passwordController)
               .then(
             (value) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Đăng ký thành công'),
+                  backgroundColor: Color.fromARGB(255, 0, 255, 85),
+                ),
+              );
               // ignore: use_build_context_synchronously
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
